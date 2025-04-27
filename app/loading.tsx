@@ -15,7 +15,7 @@ export default function Loading() {
         className="mb-8"
       >
         <Image
-          src="/gimsoc_no_bg.png"
+          src="/gimsoc_logo.svg"
           alt="Gimsoc"
           width={400}
           height={200}

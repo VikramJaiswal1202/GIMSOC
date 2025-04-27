@@ -4,46 +4,46 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
+import Link from "next/link"; // <-- Import Link
 
 export default function Home() {
-  const [showMainContent, setShowMainContent] = useState(false);
+  const [animationComplete, setAnimationComplete] = useState(false);
 
   return (
-    <div className="relative flex flex-col items-center justify-start w-screen h-screen bg-gradient-to-tr from-sky-300 to-sky-50 overflow-hidden">
+    <div className="relative flex flex-col items-center w-screen h-screen overflow-hidden bg-gradient-to-tr from-sky-300 to-sky-50">
 
-      {/* Animated Logo */}
-      {!showMainContent && (
-        <motion.div
-          initial={{ scale: 7, x: 0, y: 0, opacity: 1 }}
-          animate={{
-            scale: 3,
-            x: "-38.70vw",
-            y: "-44.5vh",
-            opacity: 1,
-          }}
-          transition={{
-            duration: 1.5,
-            delay:1,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40"
-          onAnimationComplete={() => setShowMainContent(true)} // <--- KEY PART
-        >
+      {/* Always show logo */}
+      <motion.div
+        initial={{ scale: 7 }}
+        animate={{ scale: 3, x: "-38.7vw", y: "-44.5vh" }}
+        transition={{ duration: 1.5, delay:0.5, ease: "easeInOut" }}
+        onAnimationComplete={() => setAnimationComplete(true)}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40"
+      >
+        <Link href="/">
           <Image
-            src="/gimsoc_no_bg.png"
-            alt="Gimsoc"
+            src="/gimsoc_logo.svg"
+            alt="Gimsoc Logo"
             width={100}
             height={50}
-            className="rounded-lg"
+            className="rounded-lg cursor-pointer"
+            priority
           />
-        </motion.div>
-      )}
+        </Link>
+      </motion.div>
 
-      {/* Main Content (Navbar + Page) */}
-      {showMainContent && (
+      {/* Show Navbar and Content AFTER animation completes */}
+      {animationComplete && (
         <>
           {/* Navbar */}
-          <Navbar />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, ease: "easeIn" }}
+            className="w-full"
+          >
+            <Navbar />
+          </motion.div>
 
           {/* Page Content */}
           <motion.div
@@ -52,17 +52,17 @@ export default function Home() {
             transition={{ duration: 1, ease: "easeIn" }}
             className="flex flex-col items-center justify-center mt-32 px-6 z-10"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 text-center">
+            <h1 className="mb-6 text-4xl font-bold text-center text-gray-800 md:text-5xl">
               Welcome to Gimsoc
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl text-center mb-8">
+            <p className="mb-8 text-lg text-center text-gray-600 max-w-2xl">
               Your content here - this will appear after the loading animation completes.
             </p>
             <div className="flex space-x-4">
-              <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg hover:opacity-90 transition">
+              <button className="px-6 py-3 font-medium text-white transition bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:opacity-90">
                 Get Started
               </button>
-              <button className="px-6 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-700 transition">
+              <button className="px-6 py-3 font-medium text-white transition bg-gray-800 rounded-lg hover:bg-gray-700">
                 Learn More
               </button>
             </div>
