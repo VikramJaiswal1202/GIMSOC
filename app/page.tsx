@@ -1,74 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import Navbar from "@/components/navbar";
 import Image from "next/image";
-import Link from "next/link"; // <-- Import Link
+import Navbar from "@/components/navbar";
+import SwipeCarousel from "@/components/SwipeCarousel";
 
 export default function Home() {
-  const [animationComplete, setAnimationComplete] = useState(false);
+  useEffect(() => {
+    console.log("Page Loaded");
+  }, []);
 
   return (
-    <div className="relative flex flex-col items-center w-screen h-screen overflow-hidden bg-gradient-to-tr from-sky-300 to-sky-50">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-tr from-sky-300 to-sky-50 relative">
+      {/* Navbar */}
+      <div className="relative z-50">
+        <Navbar />
+      </div>
 
-      {/* Always show logo */}
+      {/* HERO SECTION */}
       <motion.div
-        initial={{ scale: 7 }}
-        animate={{ scale: 3, x: "-38.7vw", y: "-44.5vh" }}
-        transition={{ duration: 1.5, delay:0.5, ease: "easeInOut" }}
-        onAnimationComplete={() => setAnimationComplete(true)}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
       >
-        <Link href="/">
+        <div className="relative w-full h-[450px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] overflow-hidden">
+          {/* Background Image */}
           <Image
-            src="/gimsoc_logo.svg"
-            alt="Gimsoc Logo"
-            width={100}
-            height={50}
-            className="rounded-lg cursor-pointer"
+            src="/team.jpeg"
+            alt="Team"
+            fill
+            className="object-cover blur-sm pointer-events-none"
             priority
           />
-        </Link>
-      </motion.div>
 
-      {/* Show Navbar and Content AFTER animation completes */}
-      {animationComplete && (
-        <>
-          {/* Navbar */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, ease: "easeIn" }}
-            className="w-full"
-          >
-            <Navbar />
-          </motion.div>
+          {/* Logo & Motto */}
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-4">
+            {/* ✅ Animated Central Logo */}
+            <motion.div
+              initial={{ scale: 0.2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.2 }}
+              className="w-3/4 max-w-[900px]"
+            >
+              <Image
+                src="/gimsoc_logo.svg"
+                alt="central logo"
+                width={600}
+                height={100}
+                className="w-full h-auto"
+              />
+            </motion.div>
 
-          {/* Page Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeIn" }}
-            className="flex flex-col items-center justify-center mt-32 px-6 z-10"
-          >
-            <h1 className="mb-6 text-4xl font-bold text-center text-gray-800 md:text-5xl">
-              Welcome to Gimsoc
-            </h1>
-            <p className="mb-8 text-lg text-center text-gray-600 max-w-2xl">
-              Your content here - this will appear after the loading animation completes.
-            </p>
-            <div className="flex space-x-4">
-              <button className="px-6 py-3 font-medium text-white transition bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg hover:opacity-90">
-                Get Started
-              </button>
-              <button className="px-6 py-3 font-medium text-white transition bg-gray-800 rounded-lg hover:bg-gray-700">
-                Learn More
-              </button>
+            <div className="sm:w-xl md:w-xl lg:w-xl xl:w-5/6 relative top-[-30px]">
+              <p className="text-center text-black text-sm sm:text-base md:text-lg lg:text-xl font-medium mt-4">
+                Georgian International Medical Student Society (GIMSOC) is a non-profit
+                organization founded in 2023, dedicated to uniting and empowering
+                medical students in Georgia. Our mission is to foster excellence,
+                innovation, and compassionate care in healthcare. Through interactive
+                workshops, intriguing seminars, collaborative projects, networking
+                events, and themed competitions, we offer a platform for personal and
+                professional growth. At GIMSOC, we prioritize lifelong friendships,
+                continuous learning, and research opportunities, shaping the future of
+                medicine in Georgia and beyond. Join us on this transformative journey
+                towards a healthier and more equitable world.
+              </p>
             </div>
-          </motion.div>
-        </>
-      )}
+          </div>
+
+          {/* Blue Overlay */}
+          <div className="absolute inset-0 bg-sky-200 opacity-50 pointer-events-none" />
+        </div>
+
+        {/* Carousel Section */}
+        <div className="w-full">
+          <SwipeCarousel />
+        </div>
+
+        {/* Responsive Boxes Section */}
+        <div className="mt-12 px-4">
+          <div className="text-center text-lg font-semibold text-gray-700">More Content Coming Soon...</div>
+          <div className="mt-4 h-40 bg-amber-200 rounded-xl shadow-inner" />
+        </div>
+      </motion.div>
     </div>
   );
 }

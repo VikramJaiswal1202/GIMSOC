@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-// Demo data for the carousel
 const carouselImages = [
   { src: "/gimsoc_logo.svg", alt: "Image 1", caption: "" },
   { src: "/gimsoc_logo.svg", alt: "Image 3", caption: "" },
@@ -13,7 +12,7 @@ const carouselImages = [
 export default function SwipeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [direction, setDirection] = useState<'left' | 'right' | null>(null); // Updated state type
+  const [direction, setDirection] = useState<'left' | 'right' | null>(null);
 
   const goToPrevious = () => {
     setDirection('left');
@@ -32,28 +31,21 @@ export default function SwipeCarousel() {
   };
 
   useEffect(() => {
-    // Setup interval to auto-scroll every 2 seconds
     const interval = setInterval(() => {
       goToNext();
-    }, 3000); 
-
-    // Cleanup interval when component unmounts
+    }, 3000);
     return () => clearInterval(interval);
   }, [currentIndex]);
 
   useEffect(() => {
-    // Reset animation state after animation completes
     if (isAnimating) {
-      const timer = setTimeout(() => {
-        setIsAnimating(false);
-      }, 500); // Reset after 500ms (matches your animation duration)
+      const timer = setTimeout(() => setIsAnimating(false), 500);
       return () => clearTimeout(timer);
     }
   }, [isAnimating]);
 
   const getAnimationClass = (index: number) => {
     if (!isAnimating) return '';
-
     if (index === currentIndex) {
       return direction === 'right' ? 'animate-slide-in-right' : 'animate-slide-in-left';
     }
@@ -61,10 +53,10 @@ export default function SwipeCarousel() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6">
-      <div className="relative overflow-hidden rounded-lg shadow-xl bg-gray-800 h-96 sm:h-[400px] md:h-[500px]">
+    <div className="w-full">
+      <div className="relative w-full overflow-hidden h-[250px] sm:h-[400px] md:h-[500px] bg-gray-800">
         {/* Carousel Images */}
-        <div className="relative h-full">
+        <div className="relative h-full w-full">
           {carouselImages.map((image, index) => (
             <div
               key={index}
@@ -75,7 +67,7 @@ export default function SwipeCarousel() {
               <img
                 src={image.src}
                 alt={image.alt}
-                className="object-cover w-full h-full" // Ensuring the image covers the container
+                className="w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
                 <p className="text-white text-sm sm:text-base md:text-lg font-medium">
